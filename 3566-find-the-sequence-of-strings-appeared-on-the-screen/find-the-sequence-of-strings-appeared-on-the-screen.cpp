@@ -15,7 +15,7 @@ void find(string target){
 
             }else{
                 result.push_back(ans);
-                ans[ans.size()-1]=ans[ans.size()-1]+1;
+                ans[ans.size()-1]+=1;
                 
             }
 

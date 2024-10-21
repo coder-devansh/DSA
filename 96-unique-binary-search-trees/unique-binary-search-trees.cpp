@@ -8,7 +8,7 @@ double  fact(int n){
     return fact;
 }
     int numTrees(int n) {
-        if(n>=19 || n==15 || n==14){
+        if(n==19 || n==15 || n==14){
               return (fact(2*n)/(fact(n+1)*fact(n)))+1;
 
         }

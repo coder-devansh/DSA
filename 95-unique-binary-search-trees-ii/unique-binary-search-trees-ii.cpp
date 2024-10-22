@@ -11,17 +11,17 @@
  */
 class Solution {
 public:
-
-vector<TreeNode*>create(int start,int end){
+vector<TreeNode*>fun(int n,int start,int end){
+     vector<TreeNode*>ans;
     if(start>end){
-        
-        return {NULL};
+        ans.push_back(NULL);
+        return ans;
     }
-vector<TreeNode*>ans;
+   
     for(int i=start;i<=end;i++){
-        for(auto it:create(start,i-1))
+        for(auto it:fun(n,start,i-1))
         {
-            for(auto j:create(i+1,end))
+            for(auto j:fun(n,i+1,end))
             {
                 TreeNode*root=new TreeNode(i,it,j);
                 ans.push_back(root);
@@ -29,16 +29,11 @@ vector<TreeNode*>ans;
         }
     }
     return ans;
-
-
 }
-
-vector<TreeNode*> generateTrees(int n) {
-
-return create(1,n);
-
-
-
+    vector<TreeNode*> generateTrees(int n) {
+        int start=1;
+        int end=n;
+       return  fun(n,start,end);
 
         
     }

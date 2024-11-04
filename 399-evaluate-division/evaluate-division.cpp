@@ -15,19 +15,21 @@ public:
             return 1.0; // Return 1 if both variables are the same
         }
         
-        vis.insert(dividend); // Mark the current dividend as visited
+        // Mark the current dividend as visited
 
         for (const auto& it : adj[dividend]) {
             if (vis.find(it.first) == vis.end()) { // Check if not visited
+            vis.insert(it.first);
                 double ans = divide(it.first, divisor, vis);
                 
                 if (ans > 0) { // If a valid answer was found
                     return ans * it.second; // Return the computed value
                 }
+                vis.erase(it.first);
             }
         }
 
-        vis.erase(dividend); // Unmark the dividend
+        // Unmark the dividend
         return -1.0; // Return -1 if no path found
     }
 

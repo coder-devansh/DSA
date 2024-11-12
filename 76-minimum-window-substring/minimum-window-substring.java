@@ -1,61 +1,52 @@
-public class Solution {
+class Solution {
     public String minWindow(String s, String t) {
-        String ans = "";
-        if (t.length() > s.length()) {
-            return ans;  // If s is smaller than t, return empty string
+        int targetfreq[]=new int[256];
+        int foundfreq[]=new int[256];
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<t.length();i++){
+            targetfreq[t.charAt(i)]++;
+
         }
-
-        // Arrays to store the frequencies of characters in t and in the current window
-        int[] targetFreq = new int[256]; // Frequency of characters in t
-        int[] windowFreq = new int[256]; // Frequency of characters in current window
-
-        // Populate targetFreq with the characters of t
-        for (char c : t.toCharArray()) {
-            targetFreq[c]++;
+        int l=0;
+        int r=0;
+        int found=0;
+        int required=t.length();
+        String ans="";
+        if(t.length()>s.length()){
+            return ans;
         }
-
-        // Sliding window variables
-        int l = 0, r = 0;  // Left and right pointers
-        int minLen = Integer.MAX_VALUE;  // Minimum window length
-        StringBuilder sb = new StringBuilder();  // StringBuilder to store the window content
-        int required = t.length();  // Number of characters to match
-        int formed = 0;  // How many characters in the current window meet the target frequency
-
-        while (r < s.length()) {
-            // Add the character at the right pointer to the window
-            char currentChar = s.charAt(r);
-            windowFreq[currentChar]++;
-            sb.append(currentChar);  // Append to the StringBuilder
-
-            // If the frequency of the current character in the window matches the target frequency
-            if (windowFreq[currentChar] <= targetFreq[currentChar]) {
-                formed++;
+        int minlen=Integer.MAX_VALUE;
+        while(r<s.length())
+        {
+            char currentChar=s.charAt(r);
+            sb.append(currentChar);
+            foundfreq[currentChar]++;
+            if(targetfreq[currentChar]>=foundfreq[currentChar])
+            {
+                found++;
+            }
+           
+            while(l<=r && found==required){
+                char leftChar=s.charAt(l);
+            if(r-l+1<minlen){
+                minlen=r-l+1;
+                ans=sb.toString();
             }
 
-            // Now, try to shrink the window from the left as long as it's valid
-            while (l <= r && formed == required) {
-                char leftChar = s.charAt(l);
-
-                // Update the result if we found a smaller valid window
-                if (r - l + 1 < minLen) {
-                    minLen = r - l + 1;
-                    ans = sb.toString();  // Save the minimum window substring
+                  foundfreq[leftChar]--;
+                if(foundfreq[leftChar]<targetfreq[leftChar])
+                {
+                    found--;
                 }
-
-                // Remove the leftmost character from the window
-                windowFreq[leftChar]--;
-                if (windowFreq[leftChar] < targetFreq[leftChar]) {
-                    formed--;  // We no longer have a valid character
-                }
-
-                sb.deleteCharAt(0);  // Remove the character from the StringBuilder (shift window)
-                l++;  // Shrink the window from the left
+                sb.deleteCharAt(0);
+              
+                l++;
             }
-
-            // Move the right pointer to expand the window
             r++;
-        }
 
-        return ans; 
+
+        }
+        return ans;
+        
     }
-} 
+}

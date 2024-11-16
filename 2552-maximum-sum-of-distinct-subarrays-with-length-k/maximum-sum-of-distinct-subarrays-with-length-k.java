@@ -1,34 +1,36 @@
-import java.util.HashMap;
-
 class Solution {
     public long maximumSubarraySum(int[] nums, int k) {
-        long sum = 0;           // To store the maximum sum of the subarray with k unique elements
-        long currentSum = 0;    // Running sum of the current subarray
-        HashMap<Integer, Integer> map = new HashMap<>();  // To keep track of the frequency of elements in the window
-        
-        for (int i = 0; i < nums.length; i++) {
-            // Add the current element to the map and currentSum
-            currentSum += nums[i];
-            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
-            
-            // If the window size exceeds k, remove the leftmost element
-            if (i >= k) {
-                int leftElement = nums[i - k];
-                currentSum -= leftElement;
-                map.put(leftElement, map.get(leftElement) - 1);
-                
-                // If the count of an element becomes zero, remove it from the map
-                if (map.get(leftElement) == 0) {
-                    map.remove(leftElement);
-                }
+        long sum=0;
+        long mod=1000000007;
+        long currentsum=0;
+        HashMap<Integer,Integer>mp=new HashMap<>();
+    for(int i=0;i<nums.length;i++){
+
+        mp.put(nums[i],mp.getOrDefault(nums[i],0)+1);
+        currentsum+=nums[i];
+
+        if(i>=k)
+        {
+            int leftsum=nums[i-k];
+            currentsum-=nums[i-k];
+            mp.put(leftsum,mp.get(leftsum)-1);
+
+            if(mp.get(leftsum)==0){
+                mp.remove(leftsum);
             }
-            
-            // If the window size is exactly k and all elements are unique, check the sum
-            if (i >= k - 1 && map.size() == k) {
-                sum = Math.max(sum, currentSum);
-            }
+
         }
-        
+
+        if(i>=k-1 && mp.size()==k)
+        {
+            sum=Math.max(sum,currentsum);
+        }
+           
+
+
+        }
         return sum;
+
+        
     }
 }

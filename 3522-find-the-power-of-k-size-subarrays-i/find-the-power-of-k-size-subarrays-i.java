@@ -43,9 +43,7 @@ class Solution {
                 arr[i]=-1;
             }
             
-         
-          
-        }
+            }
         return arr;
     }
 }

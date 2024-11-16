@@ -19,7 +19,7 @@ class Solution {
         for(int i=0;i<=nums.length-k;i++){
             r=i;
             int index=r+k;
-            int count=0;
+           
             
             int maxi=0;
             int found=0;

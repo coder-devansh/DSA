@@ -1,66 +1,71 @@
+/*class Solution {
+public:
+    int countUnguarded(int m, int n, vector<vector<int>>& guards,
+vector<vector<int>>& walls) {
+
+    }
+};*/
 class Solution {
 public:
-    int countUnguarded(int m, int n, vector<vector<int>>& guards, vector<vector<int>>& walls) {
-        vector<vector<int>>matrix(m,vector<int>(n,-1));
-        queue<pair<int,int>>q;
-        for(const auto& it:guards){
-            matrix[it[0]][it[1]]=0;
-            q.push({it[0],it[1]});
-        }
-        for(const auto& it:walls){
-            matrix[it[0]][it[1]]=1;
-        }
-        vector<vector<int>>vis(m,vector<int>(n,0));
-        int rows[]={-1,0,1,0};
-        int cols[]={0,1,0,-1};
-        while(!q.empty()){
-            auto it=q.front();
-            q.pop();
-            int row=it.first;
-            int col=it.second;
-            for(int i=row+1;i<m;i++){
-                if(matrix[i][col]==1 || matrix[i][col]==0){
-                    break;
-                }
-                matrix[i][col]=2;
-            }
-            for(int i=row-1;i>=0;i--){
-                if(matrix[i][col]==1 || matrix[i][col]==0)
-                {
-                    break;
-                }
-                matrix[i][col]=2;
-            }
-            for(int i=col-1;i>=0;i--){
-                if(matrix[row][i]==1 || matrix[row][i]==0 )
-                {
-                    break;
-                }
-                matrix[row][i]=2;
-            }
-            for(int i=col+1;i<n;i++){
-                if(matrix[row][i]==1 || matrix[row][i]==0)
-                {
-                    break;
-                }
-                matrix[row][i]=2;
-            }
+    const int UNGUARDED = 0;
+    const int GUARDED = 1;
+    const int GUARD = 2;
+    const int WALL = 3;
 
+    void markguarded(int row, int col, vector<vector<int>>& grid) {
+        // Traverse upwards
+        for (int r = row - 1; r >= 0; r--) {
+            if (grid[r][col] == WALL || grid[r][col] == GUARD)
+                break;
+            grid[r][col] = GUARDED;
         }
-        int count=0;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
+        // Traverse downwards
+        for (int r = row + 1; r < grid.size(); r++) {
+            if (grid[r][col] == WALL || grid[r][col] == GUARD)
+                break;
+            grid[r][col] = GUARDED;
+        }
+        // Traverse leftwards
+        for (int c = col - 1; c >= 0; c--) {
+            if (grid[row][c] == WALL || grid[row][c] == GUARD)
+                break;
+            grid[row][c] = GUARDED;
+        }
+        // Traverse rightwards
+        for (int c = col + 1; c < grid[row].size(); c++) {
+            if (grid[row][c] == WALL || grid[row][c] == GUARD)
+                break;
+            grid[row][c] = GUARDED;
+        }
+    }
 
-                if(matrix[i][j]==-1)
-                {
+    int countUnguarded(int m, int n, vector<vector<int>>& guards,
+                       vector<vector<int>>& walls) {
+        vector<vector<int>> grid(m, vector<int>(n, UNGUARDED));
+
+        // Mark guards' positions
+        for (const auto& guard : guards) {
+            grid[guard[0]][guard[1]] = GUARD;
+        }
+
+        // Mark walls' positions
+        for (const auto& wall : walls) {
+            grid[wall[0]][wall[1]] = WALL;
+        }
+
+        // Mark cells as guarded by traversing from each guard
+        for (const auto& guard : guards) {
+            markguarded(guard[0], guard[1], grid);
+        }
+
+        // Count unguarded cells
+        int count = 0;
+        for (const auto& row : grid) {
+            for (const auto& cell : row) {
+                if (cell == UNGUARDED)
                     count++;
-                }
             }
-           
         }
-        cout<<endl;
         return count;
-
-        
     }
 };

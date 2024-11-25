@@ -16,7 +16,7 @@ public:
                 s+=to_string(j);
             }
         }
-        unordered_set<string>st;
+       set<string>st;
         st.insert(s);
         queue<pair<string,int>>q;
         q.push({s,0});

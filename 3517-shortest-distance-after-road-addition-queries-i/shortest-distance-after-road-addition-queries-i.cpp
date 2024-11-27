@@ -1,51 +1,41 @@
 class Solution {
 public:
-    // Function to perform BFS and calculate the shortest distance from node 0 to node n-1
-    int bfs(vector<int> adj[], int n) {
-        vector<int> dis(n, 1e9);  // Distance array, initialized to a large value
-        queue<int> q;
-        q.push(0);
-        dis[0] = 0;
-        
-        while (!q.empty()) {
-            int node = q.front();
-            q.pop();
-            
-            for (int neighbor : adj[node]) {
-                // If a shorter path to 'neighbor' is found
-                if (dis[node] + 1 < dis[neighbor]) {
-                    dis[neighbor] = dis[node] + 1;
-                    q.push(neighbor);
-                }
+int  bfs(vector<int>adj[],int n){
+    vector<int>dis(n,1e9);
+    queue<int>q;
+    q.push(0);
+    dis[0]=0;
+    while(!q.empty()){
+        auto it=q.front();
+        int node=it;
+        q.pop();
+        for(auto it:adj[node])
+        {
+            if(dis[node]+1<dis[it])
+            {
+                dis[it]=dis[node]+1;
+                q.push(it);
+                
             }
         }
-        
-        return dis[n - 1];  // Return the distance to node n-1
+
     }
-
-    // Function to handle the queries and return the shortest distances after each query
+    return dis[n-1];
+}
     vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& queries) {
-        vector<int> adj[n];
-        
-        // Create the initial graph (consecutive nodes are connected)
-        for (int i = 0; i < n - 1; ++i) {
-            adj[i].push_back(i + 1);
-          
-        }
-
-        vector<int> result;
-        
-        // Process each query
-        for (const auto& query : queries) {
-            int u = query[0], v = query[1];
+        vector<int>adj[n];
+        for(int i=0;i<n-1;i++){
+            adj[i].push_back(i+1);
             
-            // Add the edge for the current query
-            adj[u].push_back(v);
-            
-            // Perform BFS to find the shortest path from node 0 to node n-1
-            result.push_back(bfs(adj, n));
         }
-        
+        vector<int>result;
+        for(auto it:queries){
+            adj[it[0]].push_back(it[1]);
+           
+            result.push_back(bfs(adj,n));
+        }
         return result;
+
+        
     }
 };

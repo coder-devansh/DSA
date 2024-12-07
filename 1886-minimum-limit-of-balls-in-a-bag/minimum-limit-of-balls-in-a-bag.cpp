@@ -16,7 +16,7 @@ bool canwe(int mid,vector<int>nums,int k){
             maxi=max(maxi,it);
         }
         int low=1;
-        int high=maxi;
+        int high=1e9;
         while(low<high){
             int mid=(low+high)/2;
             if(canwe(mid,nums,k)==true){

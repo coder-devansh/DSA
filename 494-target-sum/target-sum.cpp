@@ -1,39 +1,33 @@
 class Solution {
 public:
-int find(vector<int>arr,int target,int i){
-    vector<vector<int>>dp(arr.size(),vector<int>(target+1,0));
-    if(arr[0]==0){
-        dp[0][0]=2;
-    }
-    else{
-        dp[0][0]=1;
-    }
-    if(arr[0]!=0 && arr[0]<=target){
-        dp[0][arr[0]]=1;
-    }
-    for(int i=1;i<arr.size();i++){
-        for(int tar=0;tar<=target;tar++){
-            int nottaken=dp[i-1][tar];
-            int taken=0;
-            if(arr[i]<=tar){
-                taken=dp[i-1][tar-arr[i]];
-
-            }
-            dp[i][tar]=nottaken+taken;
-        }
-    }
-    
-   
-   
-    return dp[arr.size()-1][target];
-   
-}
     int findTargetSumWays(vector<int>& nums, int target) {
-        int sum=accumulate(nums.begin(),nums.end(),0);
-        if((sum-target)<0 || (sum-target)%2!=0){
-            return 0;
+        int n = nums.size();
+        int offset = 1000; // To handle negative sums, we shift the range by 1000
+        int maxSum = 2000; // Total possible range [-1000, 1000] becomes [0, 2000]
+
+        // Initialize DP table with size (n+1) x (maxSum+1) and set all values to 0
+        vector<vector<int>> dp(n + 1, vector<int>(maxSum + 1, 0));
+
+        // Base case: At index 0, sum of 0 (shifted by offset) can be achieved in 1 way
+        dp[0][offset] = 1;
+
+        // Fill the DP table iteratively
+        for (int i = 1; i <= n; i++) {
+            for (int currSum = 0; currSum <= maxSum; currSum++) {
+                if (dp[i - 1][currSum] > 0) { // If there's a way to achieve this sum
+                    // Add the current number
+                    if (currSum + nums[i - 1] <= maxSum) {
+                        dp[i][currSum + nums[i - 1]] += dp[i - 1][currSum];
+                    }
+                    // Subtract the current number
+                    if (currSum - nums[i - 1] >= 0) {
+                        dp[i][currSum - nums[i - 1]] += dp[i - 1][currSum];
+                    }
+                }
+            }
         }
-       return find(nums,(sum-target)/2,nums.size()-1);
-        
+
+        // The answer is the number of ways to achieve the target shifted by offset
+        return dp[n][target + offset];
     }
 };

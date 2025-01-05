@@ -1,7 +1,7 @@
 class Solution {
 public:
     string shiftingLetters(string s, vector<vector<int>>& shifts) {
-        vector<int>prefix(5000001,0);
+        vector<int>prefix(s.size()+1,0);
         for(auto&it:shifts){
             int start=it[0];
             int end=it[1];

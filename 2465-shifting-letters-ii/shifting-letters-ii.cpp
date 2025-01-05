@@ -2,13 +2,11 @@ class Solution {
 public:
     string shiftingLetters(string s, vector<vector<int>>& shifts) {
         vector<int>prefix(5000001,0);
-        for(auto it:shifts){
+        for(auto&it:shifts){
             int start=it[0];
             int end=it[1];
             int dir=it[2];
-            if(dir==0){
-                dir=-1;
-            }
+           dir=(dir==0)?-1:1;
             prefix[start]+=dir;
             if(end+1<s.size()){
                 prefix[end+1]-=dir;

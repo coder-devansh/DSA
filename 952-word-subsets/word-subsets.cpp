@@ -18,9 +18,8 @@ public:
             
         }
     }
-        vector<string>answer;
-        
-        for(int i=0;i<words1.size();i++){
+    vector<string>answer;
+    for(int i=0;i<words1.size();i++){
             map<char,int>element;
             string ans=words1[i];
             for(int j=0;j<ans.size();j++){
@@ -28,12 +27,7 @@ public:
                 if(mp.find(ans[j])!=mp.end() && mp[ans[j]]>element[ans[j]]){
                     element[ans[j]]++;
                 }
-
-                
-            }
-            for(auto it:element){
-                cout<<it.first<<" "<<it.second<<endl;
-            }
+                 }
             if(mp==element){
                 answer.push_back(ans);
             }

@@ -39,8 +39,8 @@ int bfs(unordered_map<int,vector<pair<int,int>>>&adj,int m,vector<int>&vis){
        while(low<high){
         int mid=(low+high)/2;
        
-      
-        if(vector<int>vis(n);bfs(adj,mid,vis)==n){
+      vector<int>vis(n);
+        if(bfs(adj,mid,vis)==n){
             high=mid;
         }else{
             low=mid+1;

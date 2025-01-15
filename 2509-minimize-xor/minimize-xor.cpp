@@ -1,47 +1,60 @@
 class Solution {
 public:
+bool setbit(int result,int bit){
+    return result & (1<<bit);
+}
     int minimizeXor(int num1, int num2) {
-        // Initialize result to num1. We will modify result.
-        int result = num1;
+        int value;
+        value=num2;
+        int count=0;
 
-        int targetSetBitsCount = __builtin_popcount(num2);
-        int setBitsCount = __builtin_popcount(result);
+        while(num2>0){
+             if((1 & num2)!=0){
+                count++;
+             }
 
-        // Start with the least significant bit (bit 0).
-        int currentBit = 0;
-
-        // Add bits to result if it has fewer set bits than the target.
-        while (setBitsCount < targetSetBitsCount) {
-            // If the current bit in result is not set (0), set it to 1.
-            if (!isSet(result, currentBit)) {
-                setBit(result, currentBit);
-                setBitsCount++;
-            }
-            // Move to the next bit.
-            currentBit++;
+            num2=num2>>1;
+           
+    
         }
-
-        // Remove bits from result if it has more set bits than the target.
-        while (setBitsCount > targetSetBitsCount) {
-            // If the current bit in result is set (1), unset it (make it 0).
-            if (isSet(result, currentBit)) {
-                unsetBit(result, currentBit);
-                setBitsCount--;
-            }
-            // Move to the next bit.
-            currentBit++;
-        }
-
-        return result;
+        num2=value;
+        int count2=0;
+    long long  result=num1;
+    long long  temp=result;
+    while(temp>0){
+       if((temp & 1)!=0){
+        count2++;
+       }
+       temp=temp>>1;
     }
+    cout<<count<<endl;
+    cout<<count2;
+    if(count2>count){
+        long long  currentbit=0;
+        while(count2>count){
+            if(setbit(result,currentbit)){
+                result=result & ~(1<<currentbit);
+                count2--;
+            }
+            currentbit++;
 
-private:
-    // Helper function to check if the given bit position in x is set (1).
-    bool isSet(int x, int bit) { return x & (1 << bit); }
+    }
+    }
+    else if(count>count2){
+        int currentbit=0;
+        while(count>count2){
+            if(!setbit(result,currentbit)){
+                result= result | (1<<currentbit);
+                count2++;
+            }
+            currentbit++;
 
-    // Helper function to set the given bit position in x to 1.
-    void setBit(int &x, int bit) { x |= (1 << bit); }
 
-    // Helper function to unset the given bit position in x (set it to 0).
-    void unsetBit(int &x, int bit) { x &= ~(1 << bit); }
+        }
+
+    }
+    
+    return result;   
+        
+    }
 };

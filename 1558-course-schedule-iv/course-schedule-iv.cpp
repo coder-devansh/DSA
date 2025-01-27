@@ -7,15 +7,12 @@ void bfs(int i,vector<vector<int>>&adj,vector<vector<bool>>&isReachable){
     while(!q.empty()){
         auto it=q.front();
         q.pop();
-        for(auto ngbr:adj[it]){
+        for(auto &ngbr:adj[it]){
             if(!isReachable[i][ngbr]){
                  isReachable[i][ngbr]=true;
                 q.push(ngbr);
-
+                }
             }
-               
-            
-        }
 
     }
 }
@@ -28,22 +25,15 @@ void bfs(int i,vector<vector<int>>&adj,vector<vector<bool>>&isReachable){
         return result;
 
        }
-        for(auto it:prerequisites){
+        for(auto &it:prerequisites){
             adj[it[0]].push_back(it[1]);
         }
        
         for(int i=0;i<numCourses;i++){
-            
-           
-                bfs(i,adj,isReachable);
-            
-
-
-        }
-        for(auto it:queries){
+            bfs(i,adj,isReachable);
+         }
+        for(auto &it:queries){
             ans.push_back(isReachable[it[0]][it[1]]);
-        
-
         }
         return ans;
         

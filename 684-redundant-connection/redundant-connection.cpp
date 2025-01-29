@@ -20,13 +20,13 @@ bool isConnected(int src,int target,vector<vector<int>>&adj,vector<int>&vis){
         int n=edges.size();
         vector<vector<int>>adj(n+1);
         for(auto &edge:edges){
-            vector<int>vis(n,0);
-            if(isConnected(edge[0]-1,edge[1]-1,adj,vis))
+            vector<int>vis(n+1,0);
+            if(isConnected(edge[0],edge[1],adj,vis))
             {
                 return edge;
             }
-            adj[edge[0]-1].push_back(edge[1]-1);
-            adj[edge[1]-1].push_back(edge[0]-1);
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
         }
         return {};
         

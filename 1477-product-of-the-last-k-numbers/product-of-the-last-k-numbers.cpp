@@ -2,9 +2,9 @@ class ProductOfNumbers {
 public:
 
    vector<long long>arr;
-   vector<long long>product;
+   vector<long long>product{1};
+
     ProductOfNumbers() {
-        arr.clear();
         
         
         
@@ -12,22 +12,22 @@ public:
     
     void add(int num) {
         arr.push_back(num);
+        if(num==0){
+            product.clear();
+            product.push_back(1);
+           
+        }else{
+              product.push_back(num*product.back());
+        }
+        
+
+        
         
         
     }
     
     int getProduct(int k) {
-        long long product=1;
-        int i=arr.size()-1;
-
-        int count=0;
-        while(i>=0 && count<k){
-            product*=arr[i];
-            i--;
-            count++;
-
-        }
-        return product;
+        return k < product.size() ? product.back() / product[product.size() - k - 1] : 0;
 
 
         

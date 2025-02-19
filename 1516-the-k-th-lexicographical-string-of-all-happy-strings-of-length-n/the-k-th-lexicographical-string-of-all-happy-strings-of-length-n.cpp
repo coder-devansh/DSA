@@ -19,7 +19,7 @@ void generate(int i,int n,int k,string ans){
 }
     string getHappyString(int n, int k) {
         generate(0,n,k,"");
-       sort(result.begin(),result.end());
+      
        if(k>result.size()){
         return "";
        }

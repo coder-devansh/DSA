@@ -20,7 +20,7 @@ public:
             right++;
             
         }
-        for(auto it:nums){
+        for(const auto&it:nums){
            if(it==0) return -1;
         }
 

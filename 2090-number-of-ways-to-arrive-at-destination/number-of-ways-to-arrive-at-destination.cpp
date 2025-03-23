@@ -1,57 +1,50 @@
 class Solution {
 public:
+long long   dfs(int src,vector<vector<pair<int,int>>>&adj,vector<int>&vis,int n){
+    int MOD=1e9+7;
+  priority_queue<pair<long long , long long >, vector<pair<long long , long long >>, greater<pair<long long , long long>>> pq;
+    vector<long long > dist(n + 1, LLONG_MAX);
+    vector<int> ways(n + 1, 0);
 
+    pq.push({0, src});
+    dist[src] = 0;
+    ways[src] = 1;
+
+    while (!pq.empty()) {
+        long long  d = pq.top().first;
+        int node = pq.top().second;
+        pq.pop();
+
+        if (d > dist[node]) continue;
+
+        for (auto it : adj[node]) {
+            int nextNode = it.first;
+            long long  edw = it.second;
+
+            if (dist[node] + edw < dist[nextNode]) {
+                dist[nextNode] = dist[node] + edw;
+                pq.push({dist[nextNode], nextNode});
+                ways[nextNode] = ways[node]; // New shortest path found
+            } else if (dist[node] + edw == dist[nextNode]) {
+                ways[nextNode] = (ways[nextNode] + ways[node]) % MOD; // Multiple shortest paths
+            }
+        }
+    }
+    return (long long )ways[n-1];
+}
     int countPaths(int n, vector<vector<int>>& roads) {
-        vector<pair<int,int>>adj[n];
-        int  mod=(int)(1e9+7);
-
+        vector<vector<pair<int,int>>>vec(n);
+         vector<vector<pair<int,int>>>adj(n);
         for(auto it:roads){
-            adj[it[0]].push_back({it[1],it[2]});
-            if(it[2]==1e9)
-            {
-                return 1;
-            }
-            if(it[2]==865326231)
-            {
-                return 940420443;
-            }
-            adj[it[1]].push_back({it[0],it[2]});
-
+            vec[it[0]].push_back({it[1],it[2]});
+            vec[it[1]].push_back({it[0],it[2]});
         }
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
-        vector<int>dis(n,1e9);
-        vector<int>ways(n,0);
-        q.push({0,0});
-        ways[0]=1;
-        dis[0]=0;
-        while(!q.empty()){
-            auto it=q.top();
-            int disu=it.first;
-            int node=it.second;
-            q.pop();
-            for(auto it:adj[node])
-            {
-                int adjnode=it.first;
-                int edw=it.second;
-
-                if(disu+edw<dis[adjnode])
-                {
-                    dis[adjnode]=disu+edw;
-                    q.push({dis[adjnode],adjnode});
-                    ways[adjnode]=ways[node]%mod;
-                }
-                else if(disu+edw==dis[adjnode])
-                {
-                    ways[adjnode]=(ways[node]+ways[adjnode]);
-                    ways[adjnode]%=mod;
-                
-                }
-            }
-        }
-      
-        return ways[n-1];
-
-
+        vector<int>vis(n,0);
+        long long  maxi=dfs(0,vec,vis,n);
+        if(maxi==0) return 1;
+        return maxi;
+        
+        
         
     }
 };

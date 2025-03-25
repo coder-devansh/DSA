@@ -1,6 +1,6 @@
 class Solution {
 public:
-bool merge(vector<pair<int,int>>Intervals){
+bool merge(vector<pair<int,int>>&Intervals){
     vector<pair<int,int>>ans;
     sort(Intervals.begin(),Intervals.end());
     for(int i=0;i<Intervals.size();i++){
@@ -18,8 +18,6 @@ bool merge(vector<pair<int,int>>Intervals){
         }
 
     }
-    
-    for(auto it:ans) cout<<it.first<<" "<<it.second<<endl;
     return ans.size()>=3;
 }
     bool checkValidCuts(int n, vector<vector<int>>& rectangles) {

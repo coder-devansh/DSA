@@ -9,12 +9,10 @@ public:
        }
        sort(ans.begin(),ans.end());
        map<int,int>mp;
-       for(auto it:ans){
+       for(const  auto&it:ans){
         mp[it%x]++;
        }
        if(mp.size()>1) return -1;
-       int l=0;
-       int r=ans.size()-1;
        int mid=ans.size()/2;
        int change_val=ans[mid];
        int cnt=0;

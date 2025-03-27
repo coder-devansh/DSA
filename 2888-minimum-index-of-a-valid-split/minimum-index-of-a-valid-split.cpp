@@ -6,9 +6,7 @@ public:
         for(int i=0;i<nums.size();i++){
             mp[nums[i]]++;
         }
-        if(nums.size()==1){
-            return -1;
-        }
+       
         for(int i=0;i<nums.size()-1;i++){
             dominant[nums[i]]++;
            if((2*dominant[nums[i]])>(i-0+1)){

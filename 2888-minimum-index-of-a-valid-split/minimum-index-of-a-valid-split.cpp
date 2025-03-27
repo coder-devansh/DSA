@@ -3,8 +3,8 @@ public:
     int minimumIndex(vector<int>& nums) {
         map<int,int>dominant;
         map<int,int>mp;
-        for(int i=0;i<nums.size();i++){
-            mp[nums[i]]++;
+        for(const auto&it:nums){
+            mp[it]++;
         }
        
         for(int i=0;i<nums.size()-1;i++){

@@ -22,11 +22,8 @@ public:
                 }
             }
             else{
-                if(arr[start]==arr[mid]){
-                    start++;
-                    end--;
-                }
-                else if(arr[mid]<=target && target<=arr[end]){
+                
+                if(arr[mid]<=target && target<=arr[end]){
                     start=mid+1;
                 }else{
                     end=mid-1;

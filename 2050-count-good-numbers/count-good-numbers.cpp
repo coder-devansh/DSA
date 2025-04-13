@@ -1,30 +1,33 @@
 class Solution {
 public:
-int fun(long long x,long long n)
-{
-    const int mod=pow(10,9)+7;
-    if(n==0)
-    {
-        return 1;
+ int mod=1000000007;
+ long long power(long long  base,long long  n){
+   
+    long long res=1;
+    while(n){
+        if(n%2==1){
+            res=(res*base)%mod;
+        }
+        if(n==1) break;
+        base=(base*base)%mod;
+        n/=2;
     }
-    if(n%2==0)
-    {
-        return fun((x*x)%mod,n/2);
-    }
-    else{
-        return (x*fun(x,n-1)%mod);
-    }
-
-
-
-}
+    return (res)%mod;
+ }
     int countGoodNumbers(long long n) {
-       long long  even=n/2+n%2;
-       long long  odd=n/2;
-       long long  num=fun(5,even);
-       const int mod=pow(10,9)+7;
-      long long num1=fun(4,odd);
-       long long ans=((num*num1)%mod);
-       return ans;
+        long long count=0;
+        int even_count=5;
+        int odd_count=5;
+        int prime_count=4;
+        long long  even_index=(n+1)/2;
+        long long  odd_index=n/2;
+        if(n==1){
+            return 5;
+        }
+       
+       
+      count=((power(4,odd_index))%mod*(power(5,even_index))%mod)%mod;
+        return (count)%mod;
+        
     }
 };

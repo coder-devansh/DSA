@@ -5,8 +5,8 @@ public:
         prefix.push_back(3);
         long long maxi=3;
         long long  mini=3;
-        for(int i=0;i<difference.size();i++){
-            long long  value=prefix[prefix.size()-1]+difference[i];
+        for(const auto&it:difference){
+            long long  value=prefix[prefix.size()-1]+it;
             prefix.push_back(value);
             maxi=max(maxi,value);
             mini=min(mini,value);

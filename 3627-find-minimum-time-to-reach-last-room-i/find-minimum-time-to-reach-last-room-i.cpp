@@ -4,13 +4,13 @@ public:
         int n=moveTime.size();
         int m=moveTime[0].size();
         vector<vector<int>>dist(n,vector<int>(m,INT_MAX));
-       priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>q;
+        queue<pair<int,pair<int,int>>>q;
         q.push({0,{0,0}});
         dist[0][0]=0;
         int r[4]={-1,0,1,0};
         int c[4]={0,1,0,-1};
         while(!q.empty()){
-            auto it=q.top();
+            auto it=q.front();
             q.pop();
             int time=it.first;
             int new_row=it.second.first;

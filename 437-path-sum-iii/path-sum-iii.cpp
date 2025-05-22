@@ -1,53 +1,22 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-vector<int>list;
-int count;
-void fun(TreeNode*root,int x)
-{
-    if(root==NULL)
+    int countPaths(TreeNode* root, long long targetSum) {
+        if (root == nullptr) return 0;
 
-    {
-        return;
-    }
-    list.push_back(root->val);
-    fun(root->left,x);
-    fun(root->right,x);
-  long long  temp=0;
-    for(int i=list.size()-1;i>=0;i--)
-    {
-        temp+=list[i];
-        if(temp==x)
-        {
-            count++;
-        }
+        int count = 0;
+        if (root->val == targetSum) count++;
 
-    }
-    list.pop_back();
+        count += countPaths(root->left, targetSum - root->val);
+        count += countPaths(root->right, targetSum - root->val);
 
-
-
-}
-    int pathSum(TreeNode* root, int targetSum) {
-        if(root==NULL )
-        {
-            return 0;
-        }
-        
-        fun(root,targetSum);
         return count;
-     
+    }
 
-        
+    int pathSum(TreeNode* root, int targetSum) {
+        if (root == nullptr) return 0;
+
+        return countPaths(root, targetSum) + 
+               pathSum(root->left, targetSum) + 
+               pathSum(root->right, targetSum);
     }
 };

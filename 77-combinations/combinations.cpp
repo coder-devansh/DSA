@@ -1,7 +1,7 @@
 class Solution {
 public:
 vector<vector<int>>result;
-void find(int i,int n,int k,vector<int>ans){
+void find(int i,int n,int k,vector<int>&ans){
     if(k==0){
         result.push_back(ans);
         return;

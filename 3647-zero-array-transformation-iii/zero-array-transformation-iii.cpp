@@ -1,53 +1,37 @@
 class Solution {
 public:
-bool canbe(vector<int>&nums,vector<vector<int>>&queries,int k){
-    vector<int>diff(nums.size()+1,0);
-    for(int i=0;i<k;i++){
-        int start=queries[i][0];
-        int end=queries[i][1];
-        int val=1;
-        diff[start]+=val;
-        diff[end+1]-=val;
-
-    }
-    int sum=0;
-    for(int i=0;i<nums.size();i++){
-        sum+=diff[i];
-        if(sum<nums[i]) return false;
-    }
-    return true;
-
-}
-static bool custom(vector<int>a,vector<int>b){
-    return a[1]>b[1];
-
-}
     int maxRemoval(vector<int>& nums, vector<vector<int>>& queries) {
-        int cur=0;
         sort(queries.begin(),queries.end());
-        priority_queue<int>cand;
-        priority_queue<int,vector<int>,greater<int>>end;
+        int usedCount=0;// to store the count of used queries
+        priority_queue<int>end_point;
+        priority_queue<int,vector<int>,greater<int>>past_point;// used to store outdated point
         int ind=0;
         for(int i=0;i<nums.size();i++){
-            int val=nums[i];
-            
             while(ind<queries.size() && queries[ind][0]==i){
-                cand.push(queries[ind][1]);
-                ++ind;
+                end_point.push(queries[ind][1]);
+                ind++;
             }
-            while(cur<val && !cand.empty() && cand.top()>=i){
-                ++cur;
-                end.push(cand.top());
-                cand.pop();
+            nums[i]-=past_point.size();
+            while(nums[i]>0 && !end_point.empty() && end_point.top()>=i){
+             nums[i]--;
+             past_point.push(end_point.top());
+             end_point.pop();
+             usedCount++;
+
+
 
             }
-            if(cur<val) return -1;
-            while(!end.empty() && end.top()==i){
-                --cur;
-                end.pop();
+            if(nums[i]>0){
+                return -1;
+            }
+            while(!past_point.empty() && past_point.top()<=i){
+                past_point.pop();
 
             }
+
         }
-        return cand.size();
+        return queries.size()-usedCount;
+
+        
     }
 };

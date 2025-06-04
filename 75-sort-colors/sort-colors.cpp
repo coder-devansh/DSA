@@ -1,18 +1,31 @@
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        map<int,int>mp;
+        int zeros=0;
+        int ones=0;
+        int two=0;
         for(auto it:nums){
-            mp[it]++;
+           if(it==0)zeros++;
+           if(it==1)ones++;
+           if(it==2)two++;
 
         }
         nums.clear();
-        for(auto it:mp){
-            for(int i=0;i<it.second;i++){
-                nums.push_back(it.first);
+        while(zeros>0){
+            nums.push_back(0);
+            zeros--;
 
-            }
         }
-        
+        while(ones>0){
+            nums.push_back(1);
+            ones--;
+
+        }
+        while(two>0){
+            nums.push_back(2);
+            two--;
+
+        }
+       
     }
 };

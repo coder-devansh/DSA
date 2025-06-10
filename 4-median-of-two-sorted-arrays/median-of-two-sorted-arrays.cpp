@@ -22,7 +22,6 @@ public:
             j++;
         }
        int n=ans.size();
-       for(auto it:ans)cout<<it<<" ";
        if(n%2!=0)return (double)ans[n/2];
        return ((double)ans[n/2]+(double)ans[n/2-1])/2;
 

@@ -1,26 +1,26 @@
 class Solution {
 public:
-vector<string>list;
-vector<string>arr={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
-void find(string digits,string str){
-    if(digits.size()==0){
-        list.push_back(str);
-        return ;
+vector<string>alpha={"0","0","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+vector<string>ans;
+void find(int i,string digits,string temp){
+    if(i==digits.size()){
+        ans.push_back(temp);
+        return;
     }
-    int ch=digits[0]-'0';
-    string ans=arr[ch];
-    for(int i=0;i<arr[ch].size();i++){
-        find(digits.substr(1),str+ans[i]);
+    string val=alpha[digits[i]-'0'];
+    for(int k=0;k<val.size();k++){
+        find(i+1,digits,temp+val[k]);
     }
+
 
 }
-    vector<string> letterCombinations(string digits) {
-        string str="";
-        if(digits.size()==0){
-            return list;
-        }
-        find(digits,"");
-        return list;
 
+    vector<string> letterCombinations(string digits) {
+        if(digits.size()==0)return {};
+        find(0,digits,"");
+        return ans;
+        
+    
+        
     }
 };

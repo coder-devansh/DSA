@@ -11,43 +11,28 @@
  */
 class Solution {
 public:
-map<int,vector<int>>mp;
- map<int,map<int,multiset<int>>>match;
-void find(TreeNode*root,int row,int col){
+map<int,map<int,multiset<int>>>mp;
+void find(int row,int col,TreeNode*root){
     if(root==NULL){
-        return ;
+        return;
     }
-    mp[col].push_back(root->val);
-    match[col][row].insert(root->val);
-    find(root->left,row+1,col-1);
-    find(root->right,row+1,col+1);
-
+    mp[col][row].insert(root->val);
+    find(row+1,col-1,root->left);
+    find(row+1,col+1,root->right);
 }
 
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        
-      find(root,0,0);
-      vector<vector<int>>result;
-      for(auto it:match){
-        vector<int>ans;
-        for(auto q:it.second){
-            ans.insert(ans.end(),q.second.begin(),q.second.end());
-        }
-            result.push_back(ans);
-      }
+        find(0,0,root);
+        vector<vector<int>>result;
+        for(auto it:mp){
+            vector<int>ans;
+            for(auto q:it.second){
+                ans.insert(ans.end(),q.second.begin(),q.second.end());
 
-    //   for(auto it:mp){
-    //     vector<int>ans;
-    //     auto vec=it.second;
-    //     for(auto it:vec){
-    //         col.insert(col.end(),it);
-            
-    //     }
-        
-    //     result.push_back(ans);
-    //     cout<<endl;
-    //   }
-      return result;
+            }
+            result.push_back(ans);
+        }
+        return result;
         
     }
 };

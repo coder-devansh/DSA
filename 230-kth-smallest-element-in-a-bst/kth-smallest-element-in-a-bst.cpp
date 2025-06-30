@@ -23,7 +23,7 @@ void store_list(TreeNode*root,vector<int>&temp){
     int kthSmallest(TreeNode* root, int k) {
         vector<int>temp;
         store_list(root,temp);
-        for(auto it:temp)cout<<it<<" ";
+       
        if(k-1<0 || k-1>temp.size())return 0;
        return temp[k-1];
         

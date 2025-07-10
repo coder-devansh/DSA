@@ -1,66 +1,43 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int n=grid.size();
-        int m=grid[0].size();
-       
-       int vis[n][m];
-     
-      
-        
-        queue<pair<pair<int,int>,int>>q;
+    
+        queue<pair<int,pair<int,int>>>q;
         for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
+            for(int j=0;j<grid[i].size();j++){
                 if(grid[i][j]==2){
-                    vis[i][j]=2;
-                    q.push({{i,j},0});
-                   
-                }
-                else{
-                    vis[i][j]=0;
+                    q.push({0,{i,j}});
                 }
             }
         }
         
-        int t=0;
+       
+        int row[4]={-1,0,1,0};
+        int col[4]={0,-1,0,1};
+        int mini=0;
         while(!q.empty()){
             auto it=q.front();
-            int row=it.first.first;
-            int col=it.first.second;
-            int tm=it.second;
-            t=max(tm,t);
             q.pop();
-            
-          int r[]={-1,0,1,0};
-          int c[]={0,1,0,-1};
-           int turn=0;
-          for(int i=0;i<4;i++){
-            int rows=row+r[i];
-            int column=col+c[i];
-           
-            if(rows>=0 && rows<grid.size() && column>=0 && column<grid[0].size() && vis[rows][column]==0 && vis[rows][column]!=2 && grid[rows][column]==1)
-            {
-                vis[rows][column]=2;
-                q.push({{rows,column},tm+1});
-                
+            int time=it.first;
+            int rows=it.second.first;
+            int cols=it.second.second;
+            mini=max(mini,it.first);
+            for(int i=0;i<4;i++){
+                int new_row=rows+row[i];
+                int new_col=cols+col[i];
+                if(new_row>=0 && new_col>=0 && new_row<grid.size() && new_col<grid[0].size() && grid[new_row][new_col]==1){
+                    grid[new_row][new_col]=2;
+                    q.push({time+1,{new_row,new_col}});
+                }
             }
-
-          }
-         
-         
-          
-            
 
         }
         for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
-                if(grid[i][j]==1 && vis[i][j]!=2)
-                {
-                    return -1;
-                }
+            for(int j=0;j<grid[i].size();j++){
+                if(grid[i][j]==1)return -1;
             }
         }
-        return t;
+        return (mini);
         
     }
 };

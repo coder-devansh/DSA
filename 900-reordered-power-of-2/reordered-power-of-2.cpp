@@ -5,7 +5,6 @@ public:
        for(int i=0;i<31;i++){
        string str=to_string((int)pow(2,i));
        sort(str.begin(),str.end());
-       cout<<str<<endl;
         mp[str]++;
 
        }

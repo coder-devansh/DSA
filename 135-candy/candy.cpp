@@ -1,24 +1,35 @@
 class Solution {
 public:
-    int candy(vector<int>& ratings) {
-        vector<int>nums(ratings.size(),1);
-        for(int i=1;i<ratings.size();i++){
-            if(ratings[i-1]<ratings[i]){
-                nums[i]=nums[i-1]+1;
+// recursion approach
+
+    int candy(vector<int>& rating) {
+        long long sum=1;
+        int n=rating.size();
+        int i=1;
+        while(i<n){
+            if(rating[i]==rating[i-1]){
+                sum+=1;
+                i++;
+                continue;
             }
-        }
-        for(int i=nums.size()-2;i>=0;i--){
-            if(ratings[i]>ratings[i+1]){
-                nums[i]=max(nums[i],nums[i+1]+1);
+            int peak=1;
+            while(i<n && rating[i]>rating[i-1]){
+                peak++;
+                sum+=peak;
+                
+                i++;
+
             }
-        }
-        int sum=0;
-        for(auto it:nums){
-            sum+=it;
+            int down=1;
+            while(i<n && rating[i]<rating[i-1]){
+                sum+=down;
+                down++;
+                i++;
+            }
+            if(down>peak){
+                sum+=(down-peak);
+            }
         }
         return sum;
-     
-
-        
     }
 };

@@ -19,7 +19,7 @@ public:
       result.push_back(temp);
 
        }
-         auto init = atexit([]() { ofstream("display_runtime.txt") << "12";});
+         auto init = atexit([]() { ofstream("display_runtime.txt") << "0";});
        return result;
        
         

@@ -9,30 +9,24 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+
 class Solution {
 public:
-pair<int,int>fun(TreeNode*root,int sum){
+pair<int,int>find_money(TreeNode*root){
     if(root==NULL){
         return {0,0};
     }
-    auto left=fun(root->left,sum);
-    auto right=fun(root->right,sum);
-    int la=left.first;
-    int lb=left.second;
-    int ra=right.first;
-    int rb=right.second;
-    return {root->val+lb+rb,max(la,lb)+max(ra,rb)};
-   
+    auto left=find_money(root->left);
+    auto right=find_money(root->right);
+    int exclude1=left.second;
+    int exclude2=right.second;
+    return {root->val+exclude1+exclude2,max(left.first,left.second)+max(right.first,right.second)};
 }
-    
-int rob(TreeNode* root) {
-   auto it=fun(root,0);
-   cout<<it.first<<" "<<it.second<<endl;
-   return max(it.first,it.second);
 
-
-       
-
+    int rob(TreeNode* root) {
+        auto val=find_money(root);
+        return max(val.first,val.second);
         
     }
 };

@@ -15,7 +15,6 @@ public:
             i++;
             bool found=false;
             for(auto it:mp1){
-                cout<<it.first<<endl;
                 if(mp.find(it.first)!=mp.end()){
                    found=true;
                 }

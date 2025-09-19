@@ -1,8 +1,7 @@
 class Spreadsheet {
 public:
-vector<vector<int>>alpha;
+map<int, map<int, int>>alpha;
     Spreadsheet(int rows) {
-        alpha.resize(rows+1,vector<int>(26+1,0));
         
     }
     

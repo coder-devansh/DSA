@@ -1,24 +1,18 @@
 class Solution {
 public:
-vector<int>dp;
-int fun(int n,vector<int>nums){
-    if(n<0){
-        return 0;
+int rob_house(int i,vector<int>&nums,vector<long long>&dp){
+    if(i>=nums.size())return 0;
+    if(dp[i]!=-1)return dp[i];
+    long long take=nums[i]+rob_house(i+2,nums,dp);
+    long long notTake=rob_house(i+1,nums,dp);
+    return dp[i]=max(take,notTake);
     }
-    if(n==0){
-        return nums[0];
-    }
-    if(dp[n]!=-1){
-        return dp[n];
-    }
-    int pick=nums[n]+fun(n-2,nums);
-    int notpick=fun(n-1,nums);
-    return dp[n]=max(pick,notpick);
-
-}
     int rob(vector<int>& nums) {
-        dp.resize(nums.size(),-1);
-        return fun(nums.size()-1,nums);
+        int n=nums.size();
+        vector<long long>dp(n+1,-1);
+        return rob_house(0,nums,dp);
+
+        
         
     }
 };

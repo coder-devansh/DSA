@@ -9,7 +9,7 @@ struct compare {
     }
 };
     vector<string> topKFrequent(vector<string>& words, int k) {
-        map<string,int>mp;
+        unordered_map<string,int>mp;
         set<pair<int,string>,compare>pq;
         for(int i=0;i<words.size();i++){
             

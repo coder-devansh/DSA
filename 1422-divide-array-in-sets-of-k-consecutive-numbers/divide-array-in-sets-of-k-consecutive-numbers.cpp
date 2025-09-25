@@ -1,34 +1,35 @@
 class Solution {
 public:
-bool createGroup(int num,int count,map<int,int>&mp,int k){
-    int start_val=num;
-    mp[start_val]--;
-    int next_val=num+1;
-    for(int i=1;i<k;i++){
-        if(mp[next_val]>0){
-            mp[next_val]--;
-        }else{
-            return false;
-        }
-        next_val++;
-    }
-    return true;
-}
-    bool isPossibleDivide(vector<int>& nums, int k) {
+    bool isPossibleDivide(vector<int>& hand, int groupSize) {
+        if(hand.size() % groupSize!=0)return false;
         map<int,int>mp;
-        for(auto it:nums){
-            mp[it]++;
-        }
-        for(auto it:mp){
-            int val=it.second;
-            while(val>0){
-                if(!createGroup(it.first,it.second,mp,k))return false;
-                val--;
+       for(auto it:hand){
+        mp[it]++;
+
+       }
+       while(true && mp.size()>0){
+        long long prev=-1;
+        int count=0;
+        if(mp.size()<groupSize)return false;
+          for(auto it:mp){
+            
+            if(count==groupSize)break;
+            if(prev==-1){
+                prev=it.first;
+            }else if(it.first-prev!=1){
+                return false;
+                
+            }else{
+                prev=it.first;
             }
-        }
+            mp[it.first]--;
+            if(mp[it.first]==0)mp.erase(it.first);
+            count++;
+          }
+       }
+
+
         return true;
-
-
         
     }
 };

@@ -14,7 +14,6 @@ public:
           for(auto it:mp){
             
             if(count==groupSize)break;
-            cout<<it.first<<" ";
             if(prev==-1){
                 prev=it.first;
             }else if(it.first-prev!=1){
@@ -27,7 +26,6 @@ public:
             if(mp[it.first]==0)mp.erase(it.first);
             count++;
           }
-          cout<<endl;
        }
 
 

@@ -4,19 +4,21 @@ public:
 struct compare {
     bool operator()(const pair<int,string>& a, const pair<int,string>& b) const {
         if (a.first == b.first) 
-            return a.second < b.second; // tie-break by string
-        return a.first > b.first;       // sort by int
+            return a.second < b.second;
+        return a.first > b.first;     
     }
 };
     vector<string> topKFrequent(vector<string>& words, int k) {
         map<string,int>mp;
         set<pair<int,string>,compare>pq;
         for(int i=0;i<words.size();i++){
-            pq.erase({mp[words[i]],words[i]});
+            
             mp[words[i]]++;
-           pq.insert({mp[words[i]],words[i]});
         }
-        int count=0;
+        for(auto it:mp){
+            pq.insert({it.second,it.first});
+        }
+         int count=0;
          vector<string>ans;
         for(auto it:pq){
             if(count==k)break;
@@ -24,9 +26,5 @@ struct compare {
             count++;
         }
         return ans;
-       
-        
-
-        
     }
 };

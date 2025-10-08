@@ -1,23 +1,39 @@
 class Solution {
 public:
-vector<vector<int >>dp;
-bool helper(int i,vector<int>&nums,int sum,int target){
-    if(sum==target/2) return true;
+bool can(int i,int target,vector<int>&nums,vector<vector<int>>&dp){
+    if(target<0)return false;
     if(i==nums.size()){
-        if(sum==target/2) return true;
-        return false;
+        return target==0;
     }
-    if(dp[i][sum]!=-1) return dp[i][sum];
-    bool left=helper(i+1,nums,sum+nums[i],target);
-    bool right=helper(i+1,nums,sum,target);
-    return dp[i][sum]=left || right;
+    if(dp[i][target]!=-1)return dp[i][target];
+    bool include=can(i+1,target-nums[i],nums,dp);
+    bool exclude=can(i+1,target,nums,dp);
+    return dp[i][target]=include || exclude;
 }
     bool canPartition(vector<int>& nums) {
-        long long sum=0;
-        for(auto it:nums) sum+=it;
-        if(sum%2!=0) return false;
-        dp.resize(nums.size()+1,vector<int>(sum,-1));
-        return helper(0,nums,0,sum);
+        int sum=0;
+        for(int i=0;i<nums.size();i++){
+            sum+=nums[i];
+        }
+        if(sum%2!=0)return false;
+        int t=sum/2;
+        vector<vector<int>>dp(nums.size()+1,vector<int>(t+1,0));
+        dp[nums.size()][0]=1;
+        // return can(0,target,nums,dp);
+        for(int i=nums.size()-1;i>=0;i--){
+            for(int target=0;target<=t;target++){
+                if(nums[i]<=target){
+                    int pick=dp[i+1][target-nums[i]];
+                    int not_pick=dp[i+1][target];
+                    dp[i][target]=pick || not_pick;
+                }else{
+                    dp[i][target]=dp[i+1][target];
+                }
+            }
+        }
+        
+        return dp[0][t];
+
 
         
     }

@@ -1,40 +1,29 @@
 class Solution {
 public:
-bool can(int i,int target,vector<int>&nums,vector<vector<int>>&dp){
-    if(target<0)return false;
-    if(i==nums.size()){
-        return target==0;
-    }
-    if(dp[i][target]!=-1)return dp[i][target];
-    bool include=can(i+1,target-nums[i],nums,dp);
-    bool exclude=can(i+1,target,nums,dp);
-    return dp[i][target]=include || exclude;
-}
     bool canPartition(vector<int>& nums) {
-        int sum=0;
-        for(int i=0;i<nums.size();i++){
-            sum+=nums[i];
+        int n=nums.size();
+        long long sum=accumulate(nums.begin(),nums.end(),0);
+        if(sum % 2==1)return false;
+        long long target=sum/2;
+        vector<vector<int>>dp(n,vector<int>(sum+1,0));
+        for(int i=0;i<n;i++){
+            dp[i][0]=true;
+
         }
-        if(sum%2!=0)return false;
-        int t=sum/2;
-        vector<vector<int>>dp(nums.size()+1,vector<int>(t+1,0));
-        dp[nums.size()][0]=1;
-        // return can(0,target,nums,dp);
-        for(int i=nums.size()-1;i>=0;i--){
-            for(int target=0;target<=t;target++){
-                if(nums[i]<=target){
-                    int pick=dp[i+1][target-nums[i]];
-                    int not_pick=dp[i+1][target];
-                    dp[i][target]=pick || not_pick;
+        if(nums[0]<=sum){
+            dp[0][nums[0]]=true;
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=target;j++){
+                if(j-nums[i]<0){
+                    dp[i][j]=dp[i-1][j];
                 }else{
-                    dp[i][target]=dp[i+1][target];
+                    dp[i][j]=dp[i-1][j] || dp[i-1][j-nums[i]];
                 }
+
             }
         }
-        
-        return dp[0][t];
-
-
+        return dp[n-1][target];
         
     }
 };

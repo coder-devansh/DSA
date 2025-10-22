@@ -1,33 +1,39 @@
+struct StackComponent{
+    int val;
+    int min_val;
+
+};
+
 class MinStack {
 public:
-map<int,int>mp;
-stack<int>st;
+stack<StackComponent>st;
+stack<int>st1;
     MinStack() {
         
     }
     
     void push(int val) {
-        st.push(val);
-        mp[val]++;
+        if(!st.empty()){
+            st.push({val,min(val,st.top().min_val)});
+
+        }else{
+            st.push({val,val});
+
+        }
         
     }
     
     void pop() {
-        int ele=st.top();
         st.pop();
-        mp[ele]--;
-        if(mp[ele]==0)mp.erase(ele);
-        
     }
     
     int top() {
-        if(st.empty())return -1;
-        return st.top();
+      if(st.empty())return -1;
+      return st.top().val;
     }
     
     int getMin() {
-       for(auto it:mp)return it.first;
-       return -1;
+       return st.top().min_val;
         
     }
 };

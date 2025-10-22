@@ -3,39 +3,31 @@ public:
 map<int,int>mp;
 stack<int>st;
     MinStack() {
-       
-
-        
         
     }
     
     void push(int val) {
-        mp[val]++;
         st.push(val);
-            
+        mp[val]++;
+        
     }
     
     void pop() {
-      mp[st.top()]--;
-      if(mp[st.top()]==0){
-        mp.erase(st.top());
-      }
-            st.pop();
-        
-
+        int ele=st.top();
+        st.pop();
+        mp[ele]--;
+        if(mp[ele]==0)mp.erase(ele);
         
     }
     
     int top() {
+        if(st.empty())return -1;
         return st.top();
-        
     }
     
     int getMin() {
-        for(auto it:mp){
-            return it.first;
-        }
-        return -1;
+       for(auto it:mp)return it.first;
+       return -1;
         
     }
 };

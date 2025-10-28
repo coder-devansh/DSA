@@ -1,19 +1,19 @@
 class Solution {
 public:
-int no_of_ways(int i,int sum,vector<int>&nums,int target,map<pair<int,int>,int>&mp){
-    if(i==nums.size()){
-        return sum==target;
-    }
-    if(mp.find({i,sum})!=mp.end())return mp[{i,sum}];
-    int left=no_of_ways(i+1,sum+nums[i],nums,target,mp);
-    int right=no_of_ways(i+1,sum-nums[i],nums,target,mp);
-    return mp[{i,sum}]=left+right;
-    
-
-}
     int findTargetSumWays(vector<int>& nums, int target) {
-     map<pair<int,int>,int>mp;
-        return no_of_ways(0,0,nums,target,mp);
+        int total_sum=accumulate(nums.begin(),nums.end(),0);
+        if(target > total_sum || target < -total_sum || (target + total_sum) % 2 != 0)
+    return 0;
+         target=(target+total_sum)/2;
+        vector<int>dp(target+1,0);
+        dp[0]=1;
+        for(int i=0;i<nums.size();i++){
+            for(int j=target;j>=nums[i];j--){
+                dp[j]=dp[j]+dp[j-nums[i]];
+            }
+        }
+        return dp[target];
+
         
     }
 };

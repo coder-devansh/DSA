@@ -14,9 +14,19 @@ class Solution {
     public int maxSumDivThree(int[] nums) {
         int dp[][]=new int[nums.length+1][3];
         for(int i=0;i<=nums.length;i++){
-            Arrays.fill(dp[i],-1);
+            Arrays.fill(dp[i],Integer.MIN_VALUE);
         }
-        return find(0,nums,0,dp);
+        dp[nums.length][0]=0;
+        for(int i=nums.length-1;i>=0;i--){
+            for(int rem=0;rem<=2;rem++){
+                int new_rem=((rem+nums[i]))%3;
+int take=dp[i+1][new_rem]==Integer.MIN_VALUE?Integer.MIN_VALUE:nums[i]+dp[i+1][new_rem];
+int skip=dp[i+1][rem];
+dp[i][rem]=Math.max(take,skip);
+            }
+        }
+        return dp[0][0];
         
     }
+    
 }

@@ -1,55 +1,49 @@
+#define ll long long
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        vector<vector<int>>matrix(n,vector<int>(n,1e9+7));
-      for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				
-				if (i == j) matrix[i][j] = 0;
-			}
-		}
-        for(const auto&it:edges){
-            int start=it[0];
-            int end=it[1];
-            int weight=it[2];
-            matrix[start][end]=weight;
-            matrix[end][start]=weight;
-        }
-
-		for (int k = 0; k < n; k++) {
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-                    if(i==j){
-                        continue;
+       vector<vector<ll>>vec(n,vector<ll>(n,(int)1e9));
+       for(int i=0;i<n;i++){
+        vec[i][i]=0;
+       }
+       for(auto it:edges){
+        vec[it[0]][it[1]]=it[2];
+        vec[it[1]][it[0]]=it[2];
+       }
+       for(int k=0;k<n;k++){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(vec[i][j] == (int)1e9) {
+	                    
+	                    // Update the distance
+	                   vec[i][j] = 
+	                        vec[i][k] +vec[k][j];
+	                }else{
+                vec[i][j]=min(vec[i][j],vec[i][k]+vec[k][j]);
                     }
-					matrix[i][j] = min(matrix[i][j],
-					                   matrix[i][k] + matrix[k][j]);
-				}
-			}
-		}
-        int ans=0;
-        int mini=INT_MAX;
-
-
-
-
-		for (int i = 0; i < n; i++) {
-            int count=0;
-			for (int j = 0; j < n; j++) {
-                if(i==j) continue;
-				if(matrix[i][j]<=distanceThreshold)
-                {
-                    count++;
-                }
-			}
-            cout<<count<<endl;
-            if(mini>=count){
-                ans=i;
-                mini=count;
             }
-		}
-        return ans;
-	
+        }
+       }
+       int max_count=INT_MAX;
+       int ans=-1;
+       for(int i=0;i<n;i++){
+        int count=0;
+        
+        for(int j=0;j<n;j++)
+        {
+            if(i==j)continue;
+            if(vec[i][j]<=distanceThreshold){
+                count++;
+            }
+        }
+       
+        if(max_count>=count){
+            ans=i;
+            max_count=count;
+        }
+       }
+       return ans;
+
         
     }
 };

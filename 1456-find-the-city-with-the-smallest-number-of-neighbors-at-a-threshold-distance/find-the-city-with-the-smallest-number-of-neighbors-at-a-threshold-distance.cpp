@@ -13,14 +13,9 @@ public:
        for(int k=0;k<n;k++){
         for(int i=0;i<n;i++){
             for(int j=0;j<n;j++){
-                if(vec[i][j] == (int)1e9) {
-	                    
-	                    // Update the distance
-	                   vec[i][j] = 
-	                        vec[i][k] +vec[k][j];
-	                }else{
+                
                 vec[i][j]=min(vec[i][j],vec[i][k]+vec[k][j]);
-                    }
+                    
             }
         }
        }

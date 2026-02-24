@@ -9,8 +9,7 @@ public:
             mp[it[0]].insert(it[1]);
             mp[it[1]].insert(it[0]);
         }
-        for(auto it:outdegree)cout<<it<<" ";
-        cout<<endl;
+        
         int maxi=0;
         for(int i=0;i<n;i++){
             for(int j=i+1;j<n;j++){

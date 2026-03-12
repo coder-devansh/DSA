@@ -1,67 +1,56 @@
+#define ll long long
 class Solution {
 public:
-int count1=0;
+void update(int ind,int low,int high,int pos,ll seg[]){
+    if(low==high){
+        seg[ind]++;
+        return;
+    }
+    int mid=(low+high)/2;
+    if(pos<=mid){
+        update(2*ind+1,low,mid,pos,seg);
+    }else{
+        update(2*ind+2,mid+1,high,pos,seg);
 
-void  merge(int low,int mid,int high,vector<pair<int,int>>&nums,vector<int>&ans){
-    int j = mid + 1;
-
-    // Count reverse pairs
-
-    // Merge two sorted halves
-    int i = low;
-    j = mid + 1;
-    vector<pair<int,int>>arr;
-    int k=0;
-    int rightCount=0;
-    while(i<=mid && j<=high){
-       
-        if(nums[i].first>nums[j].first){
-            arr.push_back(nums[j]);
-            j++;
-            rightCount++;
-        }else{
-            ans[nums[i].second]+=rightCount;
-            arr.push_back(nums[i]);
+    }
+    seg[ind]=seg[2*ind+1]+seg[2*ind+2];
+}
+int find_sum(int ind,int low,int high,int l,int r,ll seg[])
+{
+    if(low>=l && high<=r)return seg[ind];
+    if(l>high || low>r){
+        return 0;
+    }
+    int mid=(low+high)/2;
+    ll left=find_sum(2*ind+1,low,mid,l,r,seg);
+    ll right=find_sum(2*ind+2,mid+1,high,l,r,seg);
+    return left+right;
+}
+    vector<int> countSmaller(vector<int>& nums) {
+        set<int>st;
+        for(auto it:nums)st.insert(it);
+        vector<int>arr;
+        unordered_map<int,int>mp;
+        int i=0;
+        for(auto it:st){
+            mp[it]=i;
             i++;
+        }
+        vector<int>ans;
+        ll seg[4*nums.size()];
+        for(int i=0;i<4*nums.size();i++)seg[i]=0;
+        for(int i=nums.size()-1;i>=0;i--){
+            ans.push_back(find_sum(0,0,nums.size()-1,0,mp[nums[i]]-1,seg));
+            update(0,0,nums.size()-1,mp[nums[i]],seg);
 
         }
+        reverse(ans.begin(),ans.end());
+        return ans;
         
 
-    }
-    while(i<=mid){
-        ans[nums[i].second]+=rightCount;
-        arr.push_back(nums[i++]);
-    }
-    while(j<=high){
+        
+        
 
-        arr.push_back(nums[j++]);
-    }
-    for(int i=low;i<=high;i++){
-        nums[i]=arr[i-low];
-
-    }
-    
-
-
-
-}
-void mergeSort(int low,int high,vector<pair<int,int>>&nums,vector<int>&ans){
-    if(low>=high){
-    return ;
-}
-int mid=(low+high)/2;
-mergeSort(low,mid,nums,ans);
-mergeSort(mid+1,high,nums,ans);
-merge(low,mid,high,nums,ans);
-}
-    vector<int>countSmaller(vector<int>& nums) {
-    vector<int>ans(nums.size(),0);
-       vector<pair<int,int>>arr;
-       for(int i=0;i<nums.size();i++){
-        arr.push_back({nums[i],i});
-       }
-        mergeSort(0,nums.size()-1,arr,ans);
-        return ans;
         
     }
 };

@@ -1,47 +1,69 @@
+
 class Solution {
 public:
-    vector<int> leftmostBuildingQueries(vector<int>& heights,
-                                        vector<vector<int>>& queries) {
-        vector<pair<int, int>> monoStack;
-        vector<int> result(queries.size(), -1);
-        vector<vector<pair<int, int>>> newQueries(heights.size());
-        for (int i = 0; i < queries.size(); i++) {
-            int a = queries[i][0];
-            int b = queries[i][1];
-            if (a > b) swap(a, b);
-            if (heights[b] > heights[a] || a == b)
-                result[i] = b;
-            else
-                newQueries[b].push_back({heights[a], i});
-        }
-
-        for (int i = heights.size() - 1; i >= 0; i--) {
-            int monoStackSize = monoStack.size();
-            for (auto& [a, b] : newQueries[i]) {
-                int position = search(a, monoStack);
-                if (position < monoStackSize && position >= 0)
-                    result[b] = monoStack[position].second;
-            }
-            while (!monoStack.empty() && monoStack.back().first <= heights[i])
-                monoStack.pop_back();
-            monoStack.push_back({heights[i], i});
-        }
-        return result;
+vector<int>seg;
+void buildTree(int ind,int low,int high,vector<int>&height){
+    if(low==high){
+        seg[ind]=low;
+        return;
+    }
+    int mid=(low+high)/2;
+    buildTree(2*ind+1,low,mid,height);
+    buildTree(2*ind+2,mid+1,high,height);
+    int leftIndex=seg[2*ind+1];
+    int rightIndex=seg[2*ind+2];
+    if(height[leftIndex]>=height[rightIndex]){
+        seg[ind]=leftIndex;
+    }else{
+        seg[ind]=rightIndex;
     }
 
-private:
-    int search(int height, vector<pair<int, int>>& monoStack) {
-        int left = 0;
-        int right = monoStack.size() - 1;
-        int ans = -1;
-        while (left <= right) {
-            int mid = (left + right) / 2;
-            if (monoStack[mid].first > height) {
-                ans = max(ans, mid);
-                left = mid + 1;
-            } else
-                right = mid - 1;
-        }
-        return ans;
+}
+int getIndex(int ind,int low,int high,int l,int r,vector<int>&height)
+{
+    if(low>=l && high<=r)return seg[ind];
+    if(low>r || high<l)return -1;
+    int mid=(low+high)/2;
+    int leftIndex = getIndex(2*ind+1,low,mid,l,r,height);
+    int rightIndex=getIndex(2*ind+2,mid+1,high,l,r,height);
+    if(leftIndex==-1)return rightIndex;
+    if(rightIndex==-1)return leftIndex;
+    if(height[leftIndex]>=height[rightIndex])return leftIndex;
+    else return rightIndex;
+}
+    vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+        seg.resize(4*(heights.size()),0);
+        buildTree(0,0,heights.size()-1,heights);
+        vector<int>result;
+        for(auto it:queries){
+            int leftIndex=max(it[0],it[1]);
+            int rightIndex=min(it[0],it[1]);
+            if(leftIndex==rightIndex){
+                result.push_back(leftIndex);
+                continue;
+            }
+if(heights[leftIndex]>heights[rightIndex]){
+    result.push_back( leftIndex);
+    continue;
+}
+int max_element=max(heights[leftIndex],heights[rightIndex]);
+    int low=leftIndex+1;
+    int high=heights.size()-1;
+    int ans=-1;
+    while(low<=high){
+        int mid=(low+high)/2;
+    int index=getIndex(0,0,heights.size()-1,low,mid,heights);
+    if(index!=-1 && heights[index]>max_element){
+        ans=index;
+        high=mid-1;
+    }else
+    {
+        low=mid+1;
+    }
+}
+    result.push_back(ans);
+}
+        return result;
+        
     }
 };

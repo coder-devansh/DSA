@@ -2,10 +2,7 @@ class Solution {
 public:
 
     bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
-        if(n==1){
-            if(leftChild[0]==-1 && rightChild[0]==-1)return true;
-        }
-        if(n==1)return false;
+        
         vector<vector<int>>adj(n+1);
         vector<int>indegree(n,0);
         for(int i=0;i<n;i++){
@@ -29,6 +26,7 @@ public:
                 root=i;
             }
         }
+        if(root==-1)return false;
         int cnt=1;
         while(!q.empty()){
             auto it=q.front();

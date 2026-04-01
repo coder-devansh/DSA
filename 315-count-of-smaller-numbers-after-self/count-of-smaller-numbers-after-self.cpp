@@ -40,9 +40,10 @@ int find_sum(int ind,int low,int high,int l,int r,ll seg[])
         ll seg[4*nums.size()];
         for(int i=0;i<4*nums.size();i++)seg[i]=0;
         for(int i=nums.size()-1;i>=0;i--){
-            ans.push_back(find_sum(0,0,nums.size()-1,0,mp[nums[i]]-1,seg));
             update(0,0,nums.size()-1,mp[nums[i]],seg);
 
+            ans.push_back(find_sum(0,0,nums.size()-1,0,mp[nums[i]]-1,seg));
+            
         }
         reverse(ans.begin(),ans.end());
         return ans;

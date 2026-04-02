@@ -1,34 +1,32 @@
+
 class Solution {
 public:
-void dfs(int node,vector<vector<int>>adj,int&mini,vector<int>&vis){
-    vis[node]=1;
-    for(auto it:adj[node]){
-        if(!vis[it]){
-            mini=min(mini,it);
-            dfs(it,adj,mini,vis);
-        }
-
-
-    }
+vector<int>parent;
+int find(int node){
+    if(parent[node]==node)return node;
+    return parent[node]=find(parent[node]);
 }
     string smallestEquivalentString(string s1, string s2, string baseStr) {
-       vector<vector<int>>adj(27);
-    for(int i=0;i<s1.size();i++){
-        adj[s1[i]-'a'].push_back(s2[i]-'a');
-        adj[s2[i]-'a'].push_back(s1[i]-'a');
+        parent.resize(26,0);
+        for(int i=0;i<26;i++){
+            parent[i]=i;
+        }
+        for(int i=0;i<s1.size();i++){
+            int u=find(s1[i]-'a');
+            int v=find(s2[i]-'a');
+            if(u>v){
+                parent[u]=v;
+            }else {
+                parent[v]=u;
+            }
+        }
+        string str="";
+        for(int i=0;i<baseStr.size();i++){
+           str+=(char)(find(baseStr[i]-'a')+'a');
 
-    }
-       string str="";
-      
-       for(int i=0;i<baseStr.size();i++){
-        int mini=baseStr[i]-'a';
-         vector<int>vis(27,0);
-        dfs(baseStr[i]-'a',adj,mini,vis);
-        str+=(mini+'a');
-       }
-       return str;
-       
-        
+        }
+        return str;
+
         
     }
 };

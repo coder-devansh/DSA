@@ -1,65 +1,51 @@
-class DisjointSet{
-    vector<int>parent,size;
+class DSU{
+    vector<int>parent;
+    vector<int>size;
     public:
-    DisjointSet(int n){
+    DSU(int n){
         parent.resize(n+1);
-        size.resize(n+1);
-        for(int i=0;i<n;i++){
+        size.resize(n+1,0);
+        for(int i=0;i<=n;i++){
             parent[i]=i;
-            size[i]=1;
-        }
-    }
-
-    int findUpar(int node){
-        if(parent[node]==node){
-            return node;
         }
 
-        return parent[node]=findUpar(parent[node]);
     }
-
-    void UnionBySize(int u,int v){
-        int ulp_u=findUpar(u);
-        int ulp_v=findUpar(v);
+    void unionBy(int ulp_u,int ulp_v){
         if(ulp_u==ulp_v)return;
         if(size[ulp_u]<size[ulp_v]){
             parent[ulp_u]=ulp_v;
-            size[ulp_v]+=size[ulp_u];
-        }else{
+        }else if(size[ulp_u]>size[ulp_v]){
             parent[ulp_v]=ulp_u;
-            size[ulp_u]+=size[ulp_v];
+        }else{
+            size[ulp_v]++;
+            parent[ulp_u]=ulp_v;
         }
+    }
+    int find(int node){
+        if(parent[node]==node)return node;
+        return parent[node]=find(parent[node]);
     }
 };
 class Solution {
 public:
     int makeConnected(int n, vector<vector<int>>& connections) {
-        vector<bool>isConnected(n,false);
-        DisjointSet ds(n);
-        int wire=0;
+        int count=0;
+        DSU*dsu=new DSU(n);
         for(auto it:connections){
-            int node=it[0];
-            int adjnode=it[1];
-            if(ds.findUpar(node)==ds.findUpar(adjnode)){
-                wire++;
-            }else{
-                isConnected[node]=true;
-                isConnected[adjnode]=true;
-                ds.UnionBySize(node,adjnode);
+            int u=dsu->find(it[0]);
+            int v=dsu->find(it[1]);
+            if(u==v){
+                count++;
+                continue;
             }
-
+            dsu->unionBy(u,v);
+            
         }
-       
-        map<int,int>mp;
+        int temp=-1;
         for(int i=0;i<n;i++){
-            int find_par=ds.findUpar(i);
-            if(mp.find(find_par)==mp.end()){
-                mp[find_par]++;
-            }
+            if(dsu->find(i)==i)temp++;
         }
-        if(wire>=mp.size()-1)return mp.size()-1;
-        return -1;
-        
+        return temp<=count?temp:-1;
         
     }
 };

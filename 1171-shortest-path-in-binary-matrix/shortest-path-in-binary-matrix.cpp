@@ -1,32 +1,39 @@
+#define ll long long
+int dir[8]={-1,-1,0,1,1,1,0,-1};
+int dic[8]={0,1,1,1,0,-1,-1,-1};
+
 class Solution {
 public:
-int row[8]={-1,-1,-1,0,1,1,1,0};
-int col[8]={-1,0,1,1,1,0,-1,-1};
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        vector<vector<int>>dist(grid.size(),vector<int>(grid[0].size(),1e9));
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<ll>>dist(n,vector<ll>(m+1,INT_MAX));
         queue<pair<int,int>>q;
-        if(grid[0][0]==1)return -1;
-        int m=grid.size()-1;
-        int n=grid[0].size()-1;
         q.push({0,0});
         dist[0][0]=1;
+        if(grid[0][0]==1)return -1;
         while(!q.empty()){
             auto it=q.front();
             q.pop();
-            int i=it.first;
-            int j=it.second;
-            for(int k=0;k<8;k++){
-                int new_row=i+row[k];
-                int new_col=j+col[k];
-                if(new_row>=0 && new_row<grid.size() && new_col>=0 && new_col<grid[0].size() && grid[new_row][new_col]==0){
-                    if(dist[i][j]+1<dist[new_row][new_col]){
-                        dist[new_row][new_col]=dist[i][j]+1;
-                        q.push({new_row,new_col});
+            int row=it.first;
+            int col=it.second;
+            if(row==n-1 && col==m-1)continue;
+            for(int i=0;i<8;i++){
+                int new_r=row+dir[i];
+                int new_c=col+dic[i];
+                if(new_r>=0 && new_c>=0 && new_r<n && new_c<m && grid[new_r][new_c]==0){
+                    if(dist[row][col]+1<dist[new_r][new_c]){
+                        dist[new_r][new_c]=dist[row][col]+1;
+                        q.push({new_r,new_c});
+
                     }
                 }
             }
-        }cout<<dist[n][m];
-        return dist[grid.size()-1][grid[0].size()-1]==1e9?-1:dist[grid.size()-1][grid[0].size()-1];
+
+        }
+        if(dist[n-1][m-1]>=INT_MAX)return -1;
+        return dist[n-1][m-1];
+
 
         
     }

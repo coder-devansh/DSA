@@ -10,7 +10,7 @@ public:
     int minCost(vector<vector<int>>& grid) {
         int n=grid.size();
         int m=grid[0].size();
-       priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,compare>pq;
+       priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
         vector<vector<long long>>best(grid.size(),vector<long long>(grid[0].size(),INT_MAX));
         pq.push({0,{0,0}});
         best[0][0]=0;

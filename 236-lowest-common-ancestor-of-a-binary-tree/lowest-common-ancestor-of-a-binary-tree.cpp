@@ -9,22 +9,18 @@
  */
 class Solution {
 public:
-TreeNode*lca(TreeNode*root,TreeNode*p,TreeNode*q){
-    if(root==p || root==q){
-        return root;
-    }
-    if(root==NULL){
-        return NULL;
-    }
-    auto left=lca(root->left,p,q);
-    auto right=lca(root->right,p,q);
-    if(left!=NULL && right!=NULL) return root;
-    if(left!=NULL && right==NULL) return left;
+TreeNode*dfs(TreeNode*root,TreeNode*p,TreeNode*q){
+    if(root==NULL)return NULL;
+    if(root==p)return root;
+    if(root==q)return root;
+    auto left=dfs(root->left,p,q);
+    auto right=dfs(root->right,p,q);
+    if(left!=NULL && right!=NULL)return root;
+    if(left!=NULL)return left;
     return right;
 }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        return lca(root,p,q);
-
+        return dfs(root,p,q);
         
     }
 };

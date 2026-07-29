@@ -16,21 +16,12 @@ public:
         dummy->next=head;
         head=dummy;
         ListNode*temp=head;
-
-        int count=0;
         while(temp!=NULL && temp->next!=NULL){
             
-            if(mp.find(temp->next->val)!=mp.end())
-            {
-                mp[temp->next->val]++;
-                temp->next=temp->next->next;
-            }
-            else{
                 mp[(temp->next->val)]++;
-                
-                
+                    
                 temp=temp->next;
-            }
+            
         }
         temp=head;
          while(temp!=NULL && temp->next!=NULL){
@@ -46,7 +37,7 @@ public:
                 temp=temp->next;
             }
         }
-        cout<<count<<endl;
+       
         return head->next;
         
     }

@@ -16,13 +16,14 @@ bool find(int i,int j,vector<vector<char>>&grid,int balance){
         left=find(i+1,j,grid,balance-1);
         right=find(i,j+1,grid,balance-1);
         }
-        return dp[i][j][balance]=left || right;
+       
     }
    else{
         left=find(i+1,j,grid,balance+1);
         right=find(i,j+1,grid,balance+1);
-        return dp[i][j][balance]=left || right;
+       
     }
+     return dp[i][j][balance]=left || right;
     
 
 }

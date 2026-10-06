@@ -5,7 +5,7 @@ public:
         for(auto it:knowledge){
             mp[it[0]]=it[1];
         }
-        stack<char>st;
+        queue<char>st;
         string ans="";
         bool brac=false;
         for(int i=0;i<s.size();i++){
@@ -16,15 +16,12 @@ public:
             else if(s[i]==')'){
                 string val="";
                 while(!st.empty()){
-                    if(st.top()!='('){
-                        val+=st.top();
+                    if(st.front()!='('){
+                        val+=st.front();
                     }
                     st.pop();
                     brac=false;
-                    
-                    
                 }
-                reverse(val.begin(),val.end());
                
                 if(mp.find(val)!=mp.end())
                 {
